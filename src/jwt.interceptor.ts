@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { JwtHelperService } from './jwthelper.service';
+import { JwtHelper } from './jwt.helper';
 import { JWT_OPTIONS } from './jwtoptions.token';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
@@ -21,8 +21,7 @@ export class JwtInterceptor implements HttpInterceptor {
   skipWhenExpired: boolean;
 
   constructor(
-    @Inject(JWT_OPTIONS) config: any,
-    public jwtHelper: JwtHelperService
+    @Inject(JWT_OPTIONS) config: any
   ) {
     this.tokenGetter = config.tokenGetter;
     this.headerName = config.headerName || 'Authorization';
@@ -53,14 +52,14 @@ export class JwtInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ) {
-    let tokenIsExpired: boolean;
+    let tokenIsExpired: boolean = false;
 
     if (!token && this.throwNoTokenError) {
       throw new Error('Could not get token from tokenGetter function.');
     }
 
     if (this.skipWhenExpired) {
-      tokenIsExpired = token ? this.jwtHelper.isTokenExpired(token) : true;
+      tokenIsExpired = token ? JwtHelper.isTokenExpired(token) : true;
     }
 
     if (token && tokenIsExpired && this.skipWhenExpired) {
