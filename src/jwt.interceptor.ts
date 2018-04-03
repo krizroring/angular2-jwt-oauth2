@@ -61,6 +61,30 @@ export class JwtInterceptor implements HttpInterceptor {
         );
     }
 
+    /**
+     * Adds url's to blacklist
+     * @param url
+     */
+    addToBlacklist(url:any) {
+        if (typeof url === 'string') {
+            this.blacklistedRoutes.push(url);
+        } else if (Array.isArray(url)) {
+            this.blacklistedRoutes.concat(url);
+        }
+    }
+
+    /**
+     * Adds url's to blacklist
+     * @param domain
+     */
+    addToWhitelist(domain:any) {
+        if (typeof domain === 'string') {
+            this.whitelistedDomains.push(domain);
+        } else if (Array.isArray(domain)) {
+            this.whitelistedDomains.concat(domain);
+        }
+    }
+
     handleInterception(token: string, request: HttpRequest<any>, next: HttpHandler ) {
         let tokenIsExpired: boolean = true;
 
