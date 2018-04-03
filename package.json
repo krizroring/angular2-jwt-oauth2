@@ -1,6 +1,5 @@
 {
   "name": "@auth0/angular-jwt",
-  "version": "1.0.0-beta.10",
   "description": "JSON Web Token helper library for Angular",
   "scripts": {
     "prepublish": "ngc && npm run build",
